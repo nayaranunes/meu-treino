@@ -12,13 +12,11 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Meu Treino</title>
 <style>
-:root{
-  --bg:#f7f2ec; --card:#ffffff; --ink:#2a2226; --muted:#7a6e72; --line:#e8dfd8;
-  --accent:#c2456e; --ok:#2f8a5b; --okbg:#e3f3ea; --shadow:0 2px 10px rgba(60,30,40,.08);
-}
+:root{ --bg:#f7f2ec; --card:#ffffff; --ink:#2a2226; --muted:#7a6e72;
+  --accent:#c2456e; --ok:#2f8a5b; --shadow:0 2px 10px rgba(60,30,40,.08); }
 @media (prefers-color-scheme: dark){
-  :root{ --bg:#1b1719; --card:#262023; --ink:#f3ecef; --muted:#b0a3a8; --line:#3a3135;
-    --accent:#e2648d; --ok:#5cc28c; --okbg:#1f3a2c; --shadow:none; }
+  :root{ --bg:#1b1719; --card:#262023; --ink:#f3ecef; --muted:#b0a3a8;
+    --accent:#e2648d; --ok:#5cc28c; --shadow:none; }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink)}
@@ -30,7 +28,7 @@ h1{font-size:30px;margin:0}
 h2{font-size:26px;margin:4px 0}
 h3.sec{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:28px 4px 10px}
 .top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 8px;gap:8px}
-.iconbtn{font-size:17px;padding:10px 12px;border-radius:12px;color:var(--accent);font-weight:600}
+.voltar{font-size:17px;padding:10px 12px 10px 0;color:var(--accent);font-weight:600}
 .card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:18px}
 .hoje{border-top:6px solid var(--c)}
 .hoje small{color:var(--muted);font-size:15px;text-transform:uppercase;letter-spacing:.06em}
@@ -38,7 +36,7 @@ h3.sec{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--
 .big{display:block;width:100%;background:var(--accent);color:#fff;font-size:21px;font-weight:700;
   padding:18px;border-radius:16px;text-align:center}
 .big.ok{background:var(--ok)}
-.list .item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--card);
+.item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--card);
   box-shadow:var(--shadow);margin-bottom:10px;width:100%;text-align:left}
 .letra{width:46px;height:46px;border-radius:14px;background:var(--c);color:#fff;display:grid;place-items:center;
   font-weight:800;font-size:22px;flex:none}
@@ -46,318 +44,133 @@ h3.sec{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--
 .item .t b{display:block}
 .item .t span{color:var(--muted);font-size:15px}
 .badge{background:var(--accent);color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px}
-.hist{color:var(--muted);font-size:16px;padding:0 4px}
-.hist div{padding:6px 0;border-bottom:1px solid var(--line)}
-.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 16px}
-.prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
-.ex{margin-bottom:16px}
-.ex.done{outline:3px solid var(--ok)}
-.foto{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin-bottom:12px;padding:0}
-.foto img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--bg);display:block}
-.foto span{display:block;font-size:13px;color:var(--muted);margin-top:3px;text-align:center}
-.ex h3{font-size:22px;margin:0 0 8px}
-.meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.meta span{background:var(--bg);padding:6px 12px;border-radius:99px;font-size:16px;font-weight:600}
-.obs{background:#fff4d6;color:#5a4300;padding:10px 12px;border-radius:12px;font-size:16px;margin:8px 0}
-@media (prefers-color-scheme: dark){ .obs{background:#3a3218;color:#f2dc9a} }
-.carga{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:17px;color:var(--muted)}
-.carga input{font:inherit;font-size:19px;width:110px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);
-  background:var(--bg);color:var(--ink);-webkit-user-select:text;user-select:text}
-.series{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.series button{width:58px;height:58px;border-radius:50%;border:2.5px solid var(--line);font-size:20px;font-weight:700;
-  background:var(--card)}
-.series button.on{background:var(--ok);border-color:var(--ok);color:#fff}
-.hint{color:var(--muted);font-size:15px;margin:6px 0 0}
-.overlay{position:fixed;inset:0;background:rgba(20,10,15,.88);color:#fff;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:20px;z-index:10;padding:24px}
-.overlay[hidden]{display:none}
-.overlay .n{font-size:96px;font-weight:800;font-variant-numeric:tabular-nums}
-.overlay .row{display:flex;gap:12px}
-.overlay button{background:rgba(255,255,255,.16);color:#fff;padding:14px 22px;border-radius:14px;font-size:19px;font-weight:600}
-.overlay img{max-width:100%;max-height:38vh;border-radius:14px}
-#viewer{justify-content:flex-start;padding-top:calc(env(safe-area-inset-top) + 24px);overflow:auto}
-#viewer h3{margin:0;font-size:22px;text-align:center}
-#viewer small{opacity:.8;margin-top:-14px}
+.ex{margin-bottom:16px;padding:12px}
+.ex h3{font-size:21px;margin:12px 4px 2px}
+.fotos{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;padding:0}
+.fotos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--bg);display:block}
+.viewer{position:fixed;inset:0;background:rgba(20,10,15,.92);color:#fff;display:flex;flex-direction:column;
+  align-items:center;gap:14px;z-index:10;padding:calc(env(safe-area-inset-top) + 24px) 16px 24px;overflow:auto}
+.viewer[hidden]{display:none}
+.viewer h3{margin:0;font-size:22px;text-align:center}
+.viewer img{max-width:100%;max-height:40vh;border-radius:14px}
+.viewer button{background:rgba(255,255,255,.16);color:#fff;padding:14px 28px;border-radius:14px;font-size:19px;font-weight:600}
 .toast{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);background:var(--ok);color:#fff;
   padding:16px;border-radius:16px;text-align:center;font-weight:700;font-size:18px;z-index:20}
-.cfg .item{justify-content:space-between}
-.cfg p{color:var(--muted);font-size:15px;margin:6px 4px 12px}
-.sel{display:flex;gap:10px;flex-wrap:wrap}
-.sel button{flex:1;min-width:64px;padding:14px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);font-weight:700}
-.sel button.on{background:var(--accent);color:#fff}
-.sec-btn{display:block;width:100%;padding:16px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);
-  font-weight:600;margin-bottom:10px;text-align:center}
+.credito{color:var(--muted);font-size:13px;text-align:center;margin-top:28px}
 </style>
 </head>
 <body>
 <div id="app"></div>
 
-<div class="overlay" id="timer" hidden>
-  <div style="font-size:20px;opacity:.8">Descanso</div>
-  <div class="n" id="tn">0:40</div>
-  <div class="row"><button id="tplus">+15s</button><button id="tskip">Pular</button></div>
-</div>
-
-<div class="overlay" id="viewer" hidden>
+<div class="viewer" id="viewer" hidden>
   <h3 id="vtit"></h3>
-  <img id="vimg0" alt=""><small>Começo</small>
-  <img id="vimg1" alt=""><small>Fim</small>
+  <img id="vimg0" alt="">
+  <img id="vimg1" alt="">
   <button id="vfechar">Fechar</button>
 </div>
 
-<input type="file" id="importer" accept="application/json,.json" hidden>
-
 <script>
-// ====== OS TREINOS ======
-// s = séries, r = repetições, d = descanso em segundos, obs = observação do professor
+// ====== OS TREINOS (nome de cada exercício, na ordem da ficha) ======
 const TREINOS = [
   { id:'A', nome:'Glúteo', cor:'#c2456e', ex:[
-    { n:'Hack squat invertido', s:4, r:'10', d:60 },
-    { n:'Elevação pélvica', s:4, r:'até a falha', d:40,
-      obs:'Fazer pico de contração de 3 segundos. Contrair bem o glúteo em todas as repetições.' },
-    { n:'Glúteo na polia baixa', s:4, r:'10', d:40,
-      obs:'Pico de contração de 2 segundos e movimento lento. 20 segundos de intervalo para mudar de lado.' },
-    { n:'Abdução de quadril em pé (máquina)', s:4, r:'—', d:40,
-      obs:'Carga alta e cadência lenta.' },
-    { n:'Agachamento búlgaro', s:3, r:'10 + 10 + 10', d:40,
-      obs:'Drop: 10 repetições com 2 halteres + 10 com 1 halter + 10 sem peso.' },
-  ]},
+    'Hack squat invertido', 'Elevação pélvica', 'Glúteo na polia baixa',
+    'Abdução de quadril em pé (máquina)', 'Agachamento búlgaro' ]},
   { id:'B', nome:'Peito, ombro e tríceps', cor:'#d9822b', ex:[
-    { n:'Supino reto barra (ou halteres)', s:4, r:'10', d:40 },
-    { n:'Supino articulado', s:4, r:'10', d:40,
-      obs:'Pico de contração de 1 a 2 segundos em todas as repetições. Quando começar a cansar, acelere o movimento.' },
-    { n:'Crucifixo na máquina', s:4, r:'10', d:40 },
-    { n:'Desenvolvimento com halter sentado', s:4, r:'10', d:40 },
-    { n:'Elevação lateral com halter', s:4, r:'10', d:40 },
-    { n:'Tríceps pulley corda', s:4, r:'10', d:40,
-      obs:'Fazer pico de contração em todas as repetições.' },
-    { n:'Abdominal rodinha', s:3, r:'10', d:30 },
-  ]},
+    'Supino reto barra (ou halteres)', 'Supino articulado', 'Crucifixo na máquina',
+    'Desenvolvimento com halter sentado', 'Elevação lateral com halter', 'Tríceps pulley corda', 'Abdominal rodinha' ]},
   { id:'C', nome:'Costas e bíceps', cor:'#3b7dc4', ex:[
-    { n:'Puxada frontal', s:4, r:'8 a 10', d:40, obs:'Fazer movimento lento.' },
-    { n:'Remada curvada com barra', s:4, r:'10', d:40 },
-    { n:'Remada articulada unilateral neutra', s:4, r:'8 a 10', d:40 },
-    { n:'Crucifixo inverso no aparelho', s:3, r:'10', d:40 },
-    { n:'Face pull', s:4, r:'10 a 15', d:40 },
-    { n:'Bíceps no aparelho Scott', s:4, r:'10', d:40 },
-    { n:'Bíceps corda', s:3, r:'10', d:40 },
-  ]},
+    'Puxada frontal', 'Remada curvada com barra', 'Remada articulada unilateral neutra',
+    'Crucifixo inverso no aparelho', 'Face pull', 'Bíceps no aparelho Scott', 'Bíceps corda' ]},
   { id:'D', nome:'Pernas', cor:'#2f8a5b', ex:[
-    { n:'Agachamento no Smith', s:4, r:'10', d:40 },
-    { n:'Levantamento terra barra', s:4, r:'10', d:40 },
-    { n:'Leg press 45°', s:4, r:'10', d:40 },
-    { n:'Agachamento sumô com halter', s:4, r:'10', d:40 },
-    { n:'Cadeira extensora', s:4, r:'10', d:40 },
-    { n:'Afundo com halter', s:4, r:'10', d:40 },
-  ]},
+    'Agachamento no Smith', 'Levantamento terra barra', 'Leg press 45°',
+    'Agachamento sumô com halter', 'Cadeira extensora', 'Afundo com halter' ]},
 ];
+// Fotos: img/A0-0.jpg = Treino A, 1º exercício, começo do movimento; -1 = fim (free-exercise-db, domínio público)
+const foto = (key, n) => `img/${key}-${n}.jpg`;
 
 // ====== DADOS SALVOS NO CELULAR ======
 const KEY = 'meu-treino-v1';
-const def = () => ({ proximo:0, historico:[], cargas:{}, andamento:null });
-let st = (() => { try { return Object.assign(def(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch(e){ return def(); } })();
+let st = { proximo:0, historico:[] };
+try { Object.assign(st, JSON.parse(localStorage.getItem(KEY)) || {}); } catch(e){}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e){} };
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
-
-// Fotos dos exercícios: free-exercise-db (domínio público), já guardadas na pasta img/
-// img/A0-0.jpg = Treino A, exercício 1, começo do movimento; -1 = fim do movimento
-const foto = (key, n) => `img/${key}-${n}.jpg`;
 
 // ====== UTILIDADES ======
 const $ = s => document.querySelector(s);
 const app = $('#app');
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const dataBR = iso => { const d = new Date(iso); return d.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'2-digit' }); };
+const dataBR = iso => new Date(iso).toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'2-digit' });
 const ultimo = id => { for (let i = st.historico.length - 1; i >= 0; i--) if (st.historico[i].t === id) return st.historico[i].data; return null; };
-const feitos = idx => (st.andamento && st.andamento.t === idx) ? st.andamento.feitos : {};
-const tempo = s => s >= 60 ? (s % 60 ? `${Math.floor(s/60)}min ${s%60}s` : `${s/60} min`) : `${s}s`;
 function toast(msg){
   const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
   document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
 }
 
 // ====== TELAS ======
-let tela = { v:'home' };
-function go(v){ tela = v; render(); window.scrollTo(0, 0); }
-
-function render(){
-  if (tela.v === 'treino') return renderTreino(tela.i);
-  if (tela.v === 'config') return renderConfig();
-  renderHome();
-}
+let aberto = null;   // null = tela inicial; número = treino aberto
+function go(i){ aberto = i; render(); window.scrollTo(0, 0); }
+function render(){ aberto === null ? renderHome() : renderTreino(aberto); }
 
 function renderHome(){
-  const i = st.proximo, t = TREINOS[i];
-  const emAndamento = st.andamento && st.andamento.t === i && Object.keys(st.andamento.feitos).length;
-  const u = ultimo(t.id);
+  const i = st.proximo, t = TREINOS[i], u = ultimo(t.id);
   app.innerHTML = `
-    <div class="top"><h1>Meu Treino</h1><button class="iconbtn" data-a="config">Ajustes</button></div>
+    <div class="top"><h1>Meu Treino</h1></div>
     <div class="card hoje" style="--c:${t.cor}">
       <small>Treino de hoje</small>
       <div style="display:flex;align-items:center;gap:14px;margin-top:10px">
-        <div class="letra" style="--c:${t.cor}">${t.id}</div><h2>${esc(t.nome)}</h2>
+        <div class="letra" style="--c:${t.cor}">${t.id}</div><h2>${t.nome}</h2>
       </div>
       <p>${t.ex.length} exercícios${u ? ' · última vez ' + dataBR(u) : ''}</p>
-      <button class="big" data-a="abrir" data-i="${i}">${emAndamento ? 'Continuar treino' : 'Começar treino'}</button>
+      <button class="big" data-a="abrir" data-i="${i}">Começar treino</button>
     </div>
     <h3 class="sec">Ordem dos treinos</h3>
-    <div class="list">
-      ${TREINOS.map((x, j) => {
-        const ux = ultimo(x.id);
-        return `<button class="item" data-a="abrir" data-i="${j}">
-          <div class="letra" style="--c:${x.cor}">${x.id}</div>
-          <div class="t"><b>${esc(x.nome)}</b><span>${ux ? 'Última vez ' + dataBR(ux) : 'Ainda não feito'}</span></div>
-          ${j === i ? '<span class="badge">Próximo</span>' : ''}
-        </button>`; }).join('')}
-    </div>
-    ${st.historico.length ? `<h3 class="sec">Últimos treinos</h3><div class="hist">
-      ${st.historico.slice(-6).reverse().map(h => {
-        const x = TREINOS.find(y => y.id === h.t);
-        return `<div>${dataBR(h.data)} — Treino ${h.t}${x ? ' · ' + esc(x.nome) : ''}</div>`; }).join('')}
-    </div><p class="hist" style="margin-top:10px">Total: ${st.historico.length} treinos concluídos 💪</p>` : ''}
+    ${TREINOS.map((x, j) => {
+      const ux = ultimo(x.id);
+      return `<button class="item" data-a="abrir" data-i="${j}">
+        <div class="letra" style="--c:${x.cor}">${x.id}</div>
+        <div class="t"><b>${x.nome}</b><span>${ux ? 'Última vez ' + dataBR(ux) : 'Ainda não feito'}</span></div>
+        ${j === i ? '<span class="badge">Próximo</span>' : ''}
+      </button>`; }).join('')}
+    <p class="credito">Fotos: free-exercise-db (domínio público)</p>
   `;
 }
 
 function renderTreino(i){
-  const t = TREINOS[i], f = feitos(i);
-  const total = t.ex.reduce((a, e) => a + e.s, 0);
-  const feitas = t.ex.reduce((a, e, k) => a + Math.min(f[k] || 0, e.s), 0);
+  const t = TREINOS[i];
   app.innerHTML = `
-    <div class="top"><button class="iconbtn" data-a="home">‹ Voltar</button>
-      <div style="font-weight:700">Treino ${t.id}</div><div style="width:70px"></div></div>
-    <h2 style="margin-bottom:8px">${esc(t.nome)}</h2>
-    <div class="prog"><i style="width:${total ? feitas / total * 100 : 0}%"></i></div>
-    ${t.ex.map((e, k) => {
-      const key = t.id + k, n = f[k] || 0;
-      return `<div class="card ex ${n >= e.s ? 'done' : ''}">
-        <button class="foto" data-a="foto" data-k="${key}" data-n="${esc(e.n)}">
-          <div><img src="${foto(key, 0)}" alt="" loading="lazy"><span>Começo</span></div>
-          <div><img src="${foto(key, 1)}" alt="" loading="lazy"><span>Fim</span></div>
-        </button>
-        <h3>${k + 1}. ${esc(e.n)}</h3>
-        <div class="meta"><span>${e.s} séries</span><span>${esc(e.r)}${/^\d/.test(e.r) ? ' rep.' : ''}</span><span>⏱ ${tempo(e.d)}</span></div>
-        ${e.obs ? `<div class="obs">${esc(e.obs)}</div>` : ''}
-        <label class="carga">Carga <input data-carga="${key}" inputmode="decimal" placeholder="kg" value="${esc(st.cargas[key] || '')}"></label>
-        <div class="series">${Array.from({ length: e.s }, (_, s) =>
-          `<button class="${s < n ? 'on' : ''}" data-a="serie" data-k="${k}" data-s="${s + 1}">${s < n ? '✓' : s + 1}</button>`).join('')}</div>
-        ${k === 0 && !feitas ? '<p class="hint">Toque no número ao terminar cada série. O descanso começa sozinho.</p>' : ''}
-      </div>`; }).join('')}
+    <div class="top"><button class="voltar" data-a="home">‹ Voltar</button></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <div class="letra" style="--c:${t.cor}">${t.id}</div><h2>${t.nome}</h2>
+    </div>
+    ${t.ex.map((nome, k) => `<div class="card ex">
+      <button class="fotos" data-a="foto" data-k="${t.id + k}" data-n="${nome}">
+        <img src="${foto(t.id + k, 0)}" alt="" loading="lazy"><img src="${foto(t.id + k, 1)}" alt="" loading="lazy">
+      </button>
+      <h3>${k + 1}. ${nome}</h3>
+    </div>`).join('')}
     <button class="big ok" data-a="concluir" data-i="${i}" style="margin-top:8px">Concluir treino ✓</button>
   `;
 }
 
-function renderConfig(){
-  app.innerHTML = `
-    <div class="top"><button class="iconbtn" data-a="home">‹ Voltar</button><div style="font-weight:700">Ajustes</div><div style="width:70px"></div></div>
-    <h3 class="sec">Qual é o próximo treino?</h3>
-    <div class="sel">${TREINOS.map((x, j) => `<button class="${j === st.proximo ? 'on' : ''}" data-a="setprox" data-i="${j}">${x.id}</button>`).join('')}</div>
-    <p>Use se precisar pular ou repetir um treino.</p>
-    <h3 class="sec">Cópia de segurança</h3>
-    <button class="sec-btn" data-a="exportar">Salvar cópia (histórico e cargas)</button>
-    <button class="sec-btn" data-a="importar">Restaurar uma cópia</button>
-    <p>De vez em quando salve uma cópia no app Arquivos ou mande para você mesma por WhatsApp. Se o celular for trocado ou os dados forem apagados, é só restaurar.</p>
-    <p style="margin-top:28px">Fotos dos exercícios: free-exercise-db (domínio público).</p>
-  `;
-}
-
 // ====== AÇÕES ======
-app.addEventListener('click', async ev => {
+app.addEventListener('click', ev => {
   const b = ev.target.closest('[data-a]'); if (!b) return;
-  const a = b.dataset.a; somPronto();
-  if (a === 'home') go({ v:'home' });
-  else if (a === 'config') go({ v:'config' });
-  else if (a === 'abrir') go({ v:'treino', i:+b.dataset.i });
-  else if (a === 'serie') marcarSerie(tela.i, +b.dataset.k, +b.dataset.s);
-  else if (a === 'concluir') concluir(+b.dataset.i);
-  else if (a === 'setprox') { st.proximo = +b.dataset.i; save(); render(); }
-  else if (a === 'exportar') exportar();
-  else if (a === 'importar') $('#importer').click();
+  const a = b.dataset.a;
+  if (a === 'home') go(null);
+  else if (a === 'abrir') go(+b.dataset.i);
+  else if (a === 'concluir') {
+    const t = TREINOS[+b.dataset.i];
+    st.historico.push({ t:t.id, data:new Date().toISOString() });
+    st.proximo = (+b.dataset.i + 1) % TREINOS.length; save();
+    go(null);
+    toast(`Treino ${t.id} concluído! 🎉 Próximo: Treino ${TREINOS[st.proximo].id}`);
+  }
   else if (a === 'foto') {
     $('#vtit').textContent = b.dataset.n;
     $('#vimg0').src = foto(b.dataset.k, 0); $('#vimg1').src = foto(b.dataset.k, 1);
     $('#viewer').hidden = false;
   }
 });
-
-app.addEventListener('input', ev => {
-  const k = ev.target.dataset.carga; if (!k) return;
-  st.cargas[k] = ev.target.value; save();
-});
-
-function marcarSerie(i, k, s){
-  if (!st.andamento || st.andamento.t !== i) st.andamento = { t:i, feitos:{} };
-  const atual = st.andamento.feitos[k] || 0;
-  const novo = s <= atual ? s - 1 : s;   // tocar numa série já marcada desmarca
-  st.andamento.feitos[k] = novo; save();
-  const y = window.scrollY; render(); window.scrollTo(0, y);
-  if (novo > atual) iniciarTimer(TREINOS[i].ex[k].d);
-}
-
-function concluir(i){
-  const t = TREINOS[i], f = feitos(i);
-  const falta = t.ex.some((e, k) => (f[k] || 0) < e.s);
-  if (falta && !confirm('Ainda tem série sem marcar. Concluir o treino mesmo assim?')) return;
-  st.historico.push({ t:t.id, data:new Date().toISOString() });
-  st.proximo = (i + 1) % TREINOS.length;
-  st.andamento = null; save();
-  pararTimer();
-  go({ v:'home' });
-  toast(`Treino ${t.id} concluído! 🎉 Próximo: Treino ${TREINOS[st.proximo].id}`);
-}
-
-// Foto ampliada
 $('#vfechar').onclick = () => $('#viewer').hidden = true;
-
-// ====== TIMER DE DESCANSO ======
-let fim = 0, tick = null, ctx = null;
-function somPronto(){
-  try { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch(e){}
-}
-function bip(){
-  if (!ctx) return;
-  [0, .35, .7].forEach(t0 => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
-    const t = ctx.currentTime + t0;
-    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.4, t + .02);
-    g.gain.exponentialRampToValueAtTime(.0001, t + .25);
-    o.start(t); o.stop(t + .3);
-  });
-  if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
-}
-function iniciarTimer(seg){
-  fim = Date.now() + seg * 1000; $('#timer').hidden = false; atualizar();
-  clearInterval(tick); tick = setInterval(atualizar, 250);
-}
-function atualizar(){
-  const r = Math.max(0, Math.ceil((fim - Date.now()) / 1000));
-  $('#tn').textContent = `${Math.floor(r / 60)}:${String(r % 60).padStart(2, '0')}`;
-  if (r === 0) { pararTimer(); bip(); toast('Descanso acabou! Próxima série 💪'); }
-}
-function pararTimer(){ clearInterval(tick); tick = null; $('#timer').hidden = true; }
-$('#tplus').onclick = () => { fim += 15000; atualizar(); };
-$('#tskip').onclick = pararTimer;
-
-// ====== CÓPIA DE SEGURANÇA ======
-async function exportar(){
-  const nome = `meu-treino-${new Date().toISOString().slice(0, 10)}.json`;
-  const file = new File([JSON.stringify({ versao:1, dados:st })], nome, { type:'application/json' });
-  if (navigator.canShare && navigator.canShare({ files:[file] })) {
-    try { await navigator.share({ files:[file], title:'Cópia do Meu Treino' }); } catch(e){}
-  } else {
-    const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = nome; a.click();
-  }
-}
-$('#importer').addEventListener('change', async ev => {
-  const file = ev.target.files[0]; ev.target.value = ''; if (!file) return;
-  try {
-    const j = JSON.parse(await file.text());
-    if (!j.dados) throw 0;
-    if (!confirm('Isso vai substituir os dados atuais pelos da cópia. Continuar?')) return;
-    st = Object.assign(def(), j.dados); save();
-    toast('Cópia restaurada!'); go({ v:'home' });
-  } catch(e){ alert('Esse arquivo não parece ser uma cópia do Meu Treino.'); }
-});
 
 // ====== INICIAR ======
 render();

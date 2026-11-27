@@ -1,6 +1,6 @@
 // Guarda o app no celular para funcionar sem internet.
 // Ao mudar qualquer arquivo, aumente a versão abaixo.
-const CACHE = 'meu-treino-v2';
+const CACHE = 'meu-treino-v3';
 const FOTOS = { A:5, B:7, C:7, D:6 };   // quantos exercícios tem cada treino
 const FILES = ['./', './index.html', './manifest.json', './icon-180.png', './icon-512.png'];
 for (const [t, n] of Object.entries(FOTOS))
