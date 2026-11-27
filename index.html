@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Meu Treino">
+<meta name="theme-color" content="#f7f2ec">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Meu Treino</title>
+<style>
+:root{
+  --bg:#f7f2ec; --card:#ffffff; --ink:#2a2226; --muted:#7a6e72; --line:#e8dfd8;
+  --accent:#c2456e; --ok:#2f8a5b; --okbg:#e3f3ea; --shadow:0 2px 10px rgba(60,30,40,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1b1719; --card:#262023; --ink:#f3ecef; --muted:#b0a3a8; --line:#3a3135;
+    --accent:#e2648d; --ok:#5cc28c; --okbg:#1f3a2c; --shadow:none; }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:18px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+  padding:env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 24px);
+  max-width:640px;margin:0 auto;-webkit-user-select:none;user-select:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1{font-size:30px;margin:0}
+h2{font-size:26px;margin:4px 0}
+h3.sec{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:28px 4px 10px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 8px;gap:8px}
+.iconbtn{font-size:17px;padding:10px 12px;border-radius:12px;color:var(--accent);font-weight:600}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:18px}
+.hoje{border-top:6px solid var(--c)}
+.hoje small{color:var(--muted);font-size:15px;text-transform:uppercase;letter-spacing:.06em}
+.hoje p{color:var(--muted);margin:4px 0 16px}
+.big{display:block;width:100%;background:var(--accent);color:#fff;font-size:21px;font-weight:700;
+  padding:18px;border-radius:16px;text-align:center}
+.big.ok{background:var(--ok)}
+.list .item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--card);
+  box-shadow:var(--shadow);margin-bottom:10px;width:100%;text-align:left}
+.letra{width:46px;height:46px;border-radius:14px;background:var(--c);color:#fff;display:grid;place-items:center;
+  font-weight:800;font-size:22px;flex:none}
+.item .t{flex:1;min-width:0}
+.item .t b{display:block}
+.item .t span{color:var(--muted);font-size:15px}
+.badge{background:var(--accent);color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px}
+.hist{color:var(--muted);font-size:16px;padding:0 4px}
+.hist div{padding:6px 0;border-bottom:1px solid var(--line)}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:4px 0 16px}
+.prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
+.ex{margin-bottom:16px}
+.ex.done{outline:3px solid var(--ok)}
+.foto{width:100%;aspect-ratio:4/3;border-radius:14px;background:var(--bg);border:2px dashed var(--line);
+  display:grid;place-items:center;color:var(--muted);font-size:17px;overflow:hidden;margin-bottom:12px}
+.foto.has{border:0}
+.foto img{width:100%;height:100%;object-fit:cover}
+.ex h3{font-size:22px;margin:0 0 8px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.meta span{background:var(--bg);padding:6px 12px;border-radius:99px;font-size:16px;font-weight:600}
+.obs{background:#fff4d6;color:#5a4300;padding:10px 12px;border-radius:12px;font-size:16px;margin:8px 0}
+@media (prefers-color-scheme: dark){ .obs{background:#3a3218;color:#f2dc9a} }
+.carga{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:17px;color:var(--muted)}
+.carga input{font:inherit;font-size:19px;width:110px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);
+  background:var(--bg);color:var(--ink);-webkit-user-select:text;user-select:text}
+.series{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.series button{width:58px;height:58px;border-radius:50%;border:2.5px solid var(--line);font-size:20px;font-weight:700;
+  background:var(--card)}
+.series button.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.hint{color:var(--muted);font-size:15px;margin:6px 0 0}
+.overlay{position:fixed;inset:0;background:rgba(20,10,15,.88);color:#fff;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;z-index:10;padding:24px}
+.overlay[hidden]{display:none}
+.overlay .n{font-size:96px;font-weight:800;font-variant-numeric:tabular-nums}
+.overlay .row{display:flex;gap:12px}
+.overlay button{background:rgba(255,255,255,.16);color:#fff;padding:14px 22px;border-radius:14px;font-size:19px;font-weight:600}
+.overlay img{max-width:100%;max-height:65vh;border-radius:14px}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom) + 20px);background:var(--ok);color:#fff;
+  padding:16px;border-radius:16px;text-align:center;font-weight:700;font-size:18px;z-index:20}
+.cfg .item{justify-content:space-between}
+.cfg p{color:var(--muted);font-size:15px;margin:6px 4px 12px}
+.sel{display:flex;gap:10px;flex-wrap:wrap}
+.sel button{flex:1;min-width:64px;padding:14px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);font-weight:700}
+.sel button.on{background:var(--accent);color:#fff}
+.sec-btn{display:block;width:100%;padding:16px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);
+  font-weight:600;margin-bottom:10px;text-align:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="overlay" id="timer" hidden>
+  <div style="font-size:20px;opacity:.8">Descanso</div>
+  <div class="n" id="tn">0:40</div>
+  <div class="row"><button id="tplus">+15s</button><button id="tskip">Pular</button></div>
+</div>
+
+<div class="overlay" id="viewer" hidden>
+  <img id="vimg" alt="">
+  <div class="row"><button id="vtrocar">Trocar foto</button><button id="vremover">Remover</button></div>
+  <button id="vfechar">Fechar</button>
+</div>
+
+<input type="file" id="picker" accept="image/*" hidden>
+<input type="file" id="importer" accept="application/json,.json" hidden>
+
+<script>
+// ====== OS TREINOS ======
+// s = séries, r = repetições, d = descanso em segundos, obs = observação do professor
+const TREINOS = [
+  { id:'A', nome:'Glúteo', cor:'#c2456e', ex:[
+    { n:'Hack squat invertido', s:4, r:'10', d:60 },
+    { n:'Elevação pélvica', s:4, r:'até a falha', d:40,
+      obs:'Fazer pico de contração de 3 segundos. Contrair bem o glúteo em todas as repetições.' },
+    { n:'Glúteo na polia baixa', s:4, r:'10', d:40,
+      obs:'Pico de contração de 2 segundos e movimento lento. 20 segundos de intervalo para mudar de lado.' },
+    { n:'Abdução de quadril em pé (máquina)', s:4, r:'—', d:40,
+      obs:'Carga alta e cadência lenta.' },
+    { n:'Agachamento búlgaro', s:3, r:'10 + 10 + 10', d:40,
+      obs:'Drop: 10 repetições com 2 halteres + 10 com 1 halter + 10 sem peso.' },
+  ]},
+  { id:'B', nome:'Peito, ombro e tríceps', cor:'#d9822b', ex:[
+    { n:'Supino reto barra (ou halteres)', s:4, r:'10', d:40 },
+    { n:'Supino articulado', s:4, r:'10', d:40,
+      obs:'Pico de contração de 1 a 2 segundos em todas as repetições. Quando começar a cansar, acelere o movimento.' },
+    { n:'Crucifixo na máquina', s:4, r:'10', d:40 },
+    { n:'Desenvolvimento com halter sentado', s:4, r:'10', d:40 },
+    { n:'Elevação lateral com halter', s:4, r:'10', d:40 },
+    { n:'Tríceps pulley corda', s:4, r:'10', d:40,
+      obs:'Fazer pico de contração em todas as repetições.' },
+    { n:'Abdominal rodinha', s:3, r:'10', d:30 },
+  ]},
+  { id:'C', nome:'Costas e bíceps', cor:'#3b7dc4', ex:[
+    { n:'Puxada frontal', s:4, r:'8 a 10', d:40, obs:'Fazer movimento lento.' },
+    { n:'Remada curvada com barra', s:4, r:'10', d:40 },
+    { n:'Remada articulada unilateral neutra', s:4, r:'8 a 10', d:40 },
+    { n:'Crucifixo inverso no aparelho', s:3, r:'10', d:40 },
+    { n:'Face pull', s:4, r:'10 a 15', d:40 },
+    { n:'Bíceps no aparelho Scott', s:4, r:'10', d:40 },
+    { n:'Bíceps corda', s:3, r:'10', d:40 },
+  ]},
+  { id:'D', nome:'Pernas', cor:'#2f8a5b', ex:[
+    { n:'Agachamento no Smith', s:4, r:'10', d:40 },
+    { n:'Levantamento terra barra', s:4, r:'10', d:40 },
+    { n:'Leg press 45°', s:4, r:'10', d:40 },
+    { n:'Agachamento sumô com halter', s:4, r:'10', d:40 },
+    { n:'Cadeira extensora', s:4, r:'10', d:40 },
+    { n:'Afundo com halter', s:4, r:'10', d:40 },
+  ]},
+];
+
+// ====== DADOS SALVOS NO CELULAR ======
+const KEY = 'meu-treino-v1';
+const def = () => ({ proximo:0, historico:[], cargas:{}, andamento:null });
+let st = (() => { try { return Object.assign(def(), JSON.parse(localStorage.getItem(KEY)) || {}); } catch(e){ return def(); } })();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e){} };
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+
+// Fotos ficam no IndexedDB (aguenta imagens melhor que o localStorage)
+const dbp = new Promise((res, rej) => {
+  const r = indexedDB.open('meu-treino-fotos', 1);
+  r.onupgradeneeded = () => r.result.createObjectStore('fotos');
+  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+});
+async function idb(mode, fn){
+  const d = await dbp;
+  return new Promise((res, rej) => {
+    const tx = d.transaction('fotos', mode); const req = fn(tx.objectStore('fotos'));
+    tx.oncomplete = () => res(req && req.result); tx.onerror = () => rej(tx.error);
+  });
+}
+const urls = {};
+async function fotoURL(k){
+  if (k in urls) return urls[k];
+  const b = await idb('readonly', s => s.get(k)).catch(()=>null);
+  return urls[k] = b ? URL.createObjectURL(b) : null;
+}
+async function setFoto(k, blob){
+  if (blob) await idb('readwrite', s => s.put(blob, k)); else await idb('readwrite', s => s.delete(k));
+  if (urls[k]) URL.revokeObjectURL(urls[k]);
+  delete urls[k];
+}
+
+// Diminui a foto para não ocupar muito espaço
+function reduzir(file){
+  return new Promise((res, rej) => {
+    const img = new Image(); const u = URL.createObjectURL(file);
+    img.onload = () => {
+      const M = 1000, sc = Math.min(1, M / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u);
+      c.toBlob(b => b ? res(b) : rej(new Error('foto')), 'image/jpeg', 0.82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); rej(new Error('foto')); };
+    img.src = u;
+  });
+}
+
+// ====== UTILIDADES ======
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dataBR = iso => { const d = new Date(iso); return d.toLocaleDateString('pt-BR', { weekday:'short', day:'2-digit', month:'2-digit' }); };
+const ultimo = id => { for (let i = st.historico.length - 1; i >= 0; i--) if (st.historico[i].t === id) return st.historico[i].data; return null; };
+const feitos = idx => (st.andamento && st.andamento.t === idx) ? st.andamento.feitos : {};
+const tempo = s => s >= 60 ? (s % 60 ? `${Math.floor(s/60)}min ${s%60}s` : `${s/60} min`) : `${s}s`;
+function toast(msg){
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+
+// ====== TELAS ======
+let tela = { v:'home' };
+function go(v){ tela = v; render(); window.scrollTo(0, 0); }
+
+function render(){
+  if (tela.v === 'treino') return renderTreino(tela.i);
+  if (tela.v === 'config') return renderConfig();
+  renderHome();
+}
+
+function renderHome(){
+  const i = st.proximo, t = TREINOS[i];
+  const emAndamento = st.andamento && st.andamento.t === i && Object.keys(st.andamento.feitos).length;
+  const u = ultimo(t.id);
+  app.innerHTML = `
+    <div class="top"><h1>Meu Treino</h1><button class="iconbtn" data-a="config">Ajustes</button></div>
+    <div class="card hoje" style="--c:${t.cor}">
+      <small>Treino de hoje</small>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:10px">
+        <div class="letra" style="--c:${t.cor}">${t.id}</div><h2>${esc(t.nome)}</h2>
+      </div>
+      <p>${t.ex.length} exercícios${u ? ' · última vez ' + dataBR(u) : ''}</p>
+      <button class="big" data-a="abrir" data-i="${i}">${emAndamento ? 'Continuar treino' : 'Começar treino'}</button>
+    </div>
+    <h3 class="sec">Ordem dos treinos</h3>
+    <div class="list">
+      ${TREINOS.map((x, j) => {
+        const ux = ultimo(x.id);
+        return `<button class="item" data-a="abrir" data-i="${j}">
+          <div class="letra" style="--c:${x.cor}">${x.id}</div>
+          <div class="t"><b>${esc(x.nome)}</b><span>${ux ? 'Última vez ' + dataBR(ux) : 'Ainda não feito'}</span></div>
+          ${j === i ? '<span class="badge">Próximo</span>' : ''}
+        </button>`; }).join('')}
+    </div>
+    ${st.historico.length ? `<h3 class="sec">Últimos treinos</h3><div class="hist">
+      ${st.historico.slice(-6).reverse().map(h => {
+        const x = TREINOS.find(y => y.id === h.t);
+        return `<div>${dataBR(h.data)} — Treino ${h.t}${x ? ' · ' + esc(x.nome) : ''}</div>`; }).join('')}
+    </div><p class="hist" style="margin-top:10px">Total: ${st.historico.length} treinos concluídos 💪</p>` : ''}
+  `;
+}
+
+function renderTreino(i){
+  const t = TREINOS[i], f = feitos(i);
+  const total = t.ex.reduce((a, e) => a + e.s, 0);
+  const feitas = t.ex.reduce((a, e, k) => a + Math.min(f[k] || 0, e.s), 0);
+  app.innerHTML = `
+    <div class="top"><button class="iconbtn" data-a="home">‹ Voltar</button>
+      <div style="font-weight:700">Treino ${t.id}</div><div style="width:70px"></div></div>
+    <h2 style="margin-bottom:8px">${esc(t.nome)}</h2>
+    <div class="prog"><i style="width:${total ? feitas / total * 100 : 0}%"></i></div>
+    ${t.ex.map((e, k) => {
+      const key = t.id + k, n = f[k] || 0;
+      return `<div class="card ex ${n >= e.s ? 'done' : ''}">
+        <button class="foto" data-a="foto" data-k="${key}" data-foto="${key}">📷 Toque para pôr uma foto</button>
+        <h3>${k + 1}. ${esc(e.n)}</h3>
+        <div class="meta"><span>${e.s} séries</span><span>${esc(e.r)}${/^\d/.test(e.r) ? ' rep.' : ''}</span><span>⏱ ${tempo(e.d)}</span></div>
+        ${e.obs ? `<div class="obs">${esc(e.obs)}</div>` : ''}
+        <label class="carga">Carga <input data-carga="${key}" inputmode="decimal" placeholder="kg" value="${esc(st.cargas[key] || '')}"></label>
+        <div class="series">${Array.from({ length: e.s }, (_, s) =>
+          `<button class="${s < n ? 'on' : ''}" data-a="serie" data-k="${k}" data-s="${s + 1}">${s < n ? '✓' : s + 1}</button>`).join('')}</div>
+        ${k === 0 && !feitas ? '<p class="hint">Toque no número ao terminar cada série. O descanso começa sozinho.</p>' : ''}
+      </div>`; }).join('')}
+    <button class="big ok" data-a="concluir" data-i="${i}" style="margin-top:8px">Concluir treino ✓</button>
+  `;
+  app.querySelectorAll('[data-foto]').forEach(async el => {
+    const u = await fotoURL(el.dataset.foto);
+    if (u) { el.classList.add('has'); el.innerHTML = `<img src="${u}" alt="">`; }
+  });
+}
+
+function renderConfig(){
+  app.innerHTML = `
+    <div class="top"><button class="iconbtn" data-a="home">‹ Voltar</button><div style="font-weight:700">Ajustes</div><div style="width:70px"></div></div>
+    <h3 class="sec">Qual é o próximo treino?</h3>
+    <div class="sel">${TREINOS.map((x, j) => `<button class="${j === st.proximo ? 'on' : ''}" data-a="setprox" data-i="${j}">${x.id}</button>`).join('')}</div>
+    <p>Use se precisar pular ou repetir um treino.</p>
+    <h3 class="sec">Cópia de segurança</h3>
+    <button class="sec-btn" data-a="exportar">Salvar cópia (histórico, cargas e fotos)</button>
+    <button class="sec-btn" data-a="importar">Restaurar uma cópia</button>
+    <p>De vez em quando salve uma cópia no app Arquivos ou mande para você mesma por WhatsApp. Se o celular for trocado ou os dados forem apagados, é só restaurar.</p>
+  `;
+}
+
+// ====== AÇÕES ======
+let fotoAlvo = null;
+app.addEventListener('click', async ev => {
+  const b = ev.target.closest('[data-a]'); if (!b) return;
+  const a = b.dataset.a; somPronto();
+  if (a === 'home') go({ v:'home' });
+  else if (a === 'config') go({ v:'config' });
+  else if (a === 'abrir') go({ v:'treino', i:+b.dataset.i });
+  else if (a === 'serie') marcarSerie(tela.i, +b.dataset.k, +b.dataset.s);
+  else if (a === 'concluir') concluir(+b.dataset.i);
+  else if (a === 'setprox') { st.proximo = +b.dataset.i; save(); render(); }
+  else if (a === 'exportar') exportar();
+  else if (a === 'importar') $('#importer').click();
+  else if (a === 'foto') {
+    fotoAlvo = b.dataset.k;
+    const u = await fotoURL(fotoAlvo);
+    if (u) { $('#vimg').src = u; $('#viewer').hidden = false; }
+    else $('#picker').click();
+  }
+});
+
+app.addEventListener('input', ev => {
+  const k = ev.target.dataset.carga; if (!k) return;
+  st.cargas[k] = ev.target.value; save();
+});
+
+function marcarSerie(i, k, s){
+  if (!st.andamento || st.andamento.t !== i) st.andamento = { t:i, feitos:{} };
+  const atual = st.andamento.feitos[k] || 0;
+  const novo = s <= atual ? s - 1 : s;   // tocar numa série já marcada desmarca
+  st.andamento.feitos[k] = novo; save();
+  const y = window.scrollY; render(); window.scrollTo(0, y);
+  if (novo > atual) iniciarTimer(TREINOS[i].ex[k].d);
+}
+
+function concluir(i){
+  const t = TREINOS[i], f = feitos(i);
+  const falta = t.ex.some((e, k) => (f[k] || 0) < e.s);
+  if (falta && !confirm('Ainda tem série sem marcar. Concluir o treino mesmo assim?')) return;
+  st.historico.push({ t:t.id, data:new Date().toISOString() });
+  st.proximo = (i + 1) % TREINOS.length;
+  st.andamento = null; save();
+  pararTimer();
+  go({ v:'home' });
+  toast(`Treino ${t.id} concluído! 🎉 Próximo: Treino ${TREINOS[st.proximo].id}`);
+}
+
+// Fotos
+$('#picker').addEventListener('change', async ev => {
+  const file = ev.target.files[0]; ev.target.value = '';
+  if (!file || !fotoAlvo) return;
+  try { await setFoto(fotoAlvo, await reduzir(file)); $('#viewer').hidden = true; render(); }
+  catch(e){ alert('Não consegui usar essa foto. Tente outra.'); }
+});
+$('#vfechar').onclick = () => $('#viewer').hidden = true;
+$('#vtrocar').onclick = () => $('#picker').click();
+$('#vremover').onclick = async () => {
+  if (!confirm('Remover esta foto?')) return;
+  await setFoto(fotoAlvo, null); $('#viewer').hidden = true; render();
+};
+
+// ====== TIMER DE DESCANSO ======
+let fim = 0, tick = null, ctx = null;
+function somPronto(){
+  try { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); } catch(e){}
+}
+function bip(){
+  if (!ctx) return;
+  [0, .35, .7].forEach(t0 => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
+    const t = ctx.currentTime + t0;
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.4, t + .02);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .25);
+    o.start(t); o.stop(t + .3);
+  });
+  if (navigator.vibrate) navigator.vibrate([300, 150, 300]);
+}
+function iniciarTimer(seg){
+  fim = Date.now() + seg * 1000; $('#timer').hidden = false; atualizar();
+  clearInterval(tick); tick = setInterval(atualizar, 250);
+}
+function atualizar(){
+  const r = Math.max(0, Math.ceil((fim - Date.now()) / 1000));
+  $('#tn').textContent = `${Math.floor(r / 60)}:${String(r % 60).padStart(2, '0')}`;
+  if (r === 0) { pararTimer(); bip(); toast('Descanso acabou! Próxima série 💪'); }
+}
+function pararTimer(){ clearInterval(tick); tick = null; $('#timer').hidden = true; }
+$('#tplus').onclick = () => { fim += 15000; atualizar(); };
+$('#tskip').onclick = pararTimer;
+
+// ====== CÓPIA DE SEGURANÇA ======
+const paraDataURL = b => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b); });
+async function exportar(){
+  const [keys, vals] = await Promise.all([idb('readonly', s => s.getAllKeys()), idb('readonly', s => s.getAll())]);
+  const fotos = {};
+  for (let j = 0; j < keys.length; j++) fotos[keys[j]] = await paraDataURL(vals[j]);
+  const nome = `meu-treino-${new Date().toISOString().slice(0, 10)}.json`;
+  const file = new File([JSON.stringify({ versao:1, dados:st, fotos })], nome, { type:'application/json' });
+  if (navigator.canShare && navigator.canShare({ files:[file] })) {
+    try { await navigator.share({ files:[file], title:'Cópia do Meu Treino' }); } catch(e){}
+  } else {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = nome; a.click();
+  }
+}
+$('#importer').addEventListener('change', async ev => {
+  const file = ev.target.files[0]; ev.target.value = ''; if (!file) return;
+  try {
+    const j = JSON.parse(await file.text());
+    if (!j.dados) throw 0;
+    if (!confirm('Isso vai substituir os dados atuais pelos da cópia. Continuar?')) return;
+    st = Object.assign(def(), j.dados); save();
+    for (const [k, d] of Object.entries(j.fotos || {})) await setFoto(k, await (await fetch(d)).blob());
+    toast('Cópia restaurada!'); go({ v:'home' });
+  } catch(e){ alert('Esse arquivo não parece ser uma cópia do Meu Treino.'); }
+});
+
+// ====== INICIAR ======
+render();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
